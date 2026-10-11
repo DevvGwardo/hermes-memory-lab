@@ -10,9 +10,9 @@ flowchart TD
     Correct --> Evidence{"Current evidence actually retrieved?"}
     Evidence -->|No| Abstain["Can count as deletion abstention<br/>Cannot satisfy critical evidence gate"]
     Evidence -->|Yes| Critical["Eligible for critical acceptance<br/>Check before and after restart"]
-    classDef good fill:#e1f0ef,stroke:#176370,color:#18292d
-    classDef warn fill:#fff0cc,stroke:#ad6f16,color:#18292d
-    classDef neutral fill:#f5f2ec,stroke:#626f77,color:#18292d
+    classDef good fill:#062a2a,stroke:#00f5d4,stroke-width:1.5px,color:#e0f2fe
+    classDef warn fill:#2c1818,stroke:#f87171,stroke-width:1.5px,color:#fee2e2
+    classDef neutral fill:#131e36,stroke:#38bdf8,stroke-width:1.5px,color:#e2e8f0
     class Correct,Critical good
     class Failure,Invalid,Incorrect,Abstain warn
     class Planned,Status,Format,Match,Evidence neutral
