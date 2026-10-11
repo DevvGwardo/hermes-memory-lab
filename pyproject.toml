@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68,<82"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-memory-lab"
+version = "0.2.0"
+description = "Seeded, isolated memory and compaction diagnostics for Hermes"
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = []
+
+[tool.setuptools]
+py-modules = ["simulator"]
+
+[tool.setuptools.packages.find]
+include = ["memory_sim*"]

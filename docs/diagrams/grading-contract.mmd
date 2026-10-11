@@ -1,0 +1,18 @@
+flowchart TD
+    Planned["Every planned query"] --> Status{"Query outcome?"}
+    Status -->|Error, malformed reply, budget skip| Failure["Incorrect end-to-end outcome<br/>Keep in planned denominator"]
+    Status -->|Response received| Format{"Exact value, exact abstention<br/>or strict structured JSON?"}
+    Format -->|No: prose or conflicting values| Invalid["Invalid answer<br/>Do not extract the first token"]
+    Invalid --> Failure
+    Format -->|Yes| Match{"Matches independent latest state?"}
+    Match -->|No| Incorrect["Incorrect, stale or invented"]
+    Match -->|Yes| Correct["Correct answer"]
+    Correct --> Evidence{"Current evidence actually retrieved?"}
+    Evidence -->|No| Abstain["Can count as deletion abstention<br/>Cannot satisfy critical evidence gate"]
+    Evidence -->|Yes| Critical["Eligible for critical acceptance<br/>Check before and after restart"]
+    classDef good fill:#e1f0ef,stroke:#176370,color:#18292d
+    classDef warn fill:#fff0cc,stroke:#ad6f16,color:#18292d
+    classDef neutral fill:#f5f2ec,stroke:#626f77,color:#18292d
+    class Correct,Critical good
+    class Failure,Invalid,Incorrect,Abstain warn
+    class Planned,Status,Format,Match,Evidence neutral

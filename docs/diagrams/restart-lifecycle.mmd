@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant C as Seed controller<br/>and grader
+    participant P1 as Checkpoint<br/>interpreter P1
+    participant D as Private persistent<br/>stores
+    participant P2 as Verification<br/>interpreter P2
+    C->>P1: Source messages and query keys only
+    Note over C: Expected values stay<br/>in the controller
+    P1->>D: Reopen previous session and memory
+    P1->>D: Ingest next source segment
+    P1->>P1: Index, recall and forced compaction
+    P1->>D: Archive originals and persist active context
+    P1-->>C: Observed states, answers and process identity
+    Note over P1: Exit interpreter P1
+    C->>P2: Start a separate fresh interpreter
+    P2->>D: Reopen SQLite and the memory provider
+    P2->>D: Read current evidence and run recall probes
+    P2-->>C: Reopened states, answers and different startup token
+    C->>C: Compare exact states and independently grade answers
+    Note over P2: Exit interpreter P2
+    Note over C,D: Next checkpoint starts another fresh interpreter, stores persist
