@@ -213,6 +213,14 @@ def compare_runs(left, right, *, allow_confounded=False, allow_incomplete=False)
                 raise ValueError(f"Seed {seed} has a different {key}")
         if (a[seed]["status"] != "complete" or b[seed]["status"] != "complete") and not allow_incomplete:
             raise ValueError("Incomplete jobs require --allow-incomplete and a shared checkpoint")
+        if not a[seed].get("python_version") or not b[seed].get("python_version"):
+            if not allow_confounded:
+                raise ValueError("Missing Python environment metadata")
+            differences[f"missing_python_seed_{seed}"] = True
+        if not a[seed].get("dependency_versions") or not b[seed].get("dependency_versions"):
+            if not allow_confounded:
+                raise ValueError("Missing dependency environment metadata")
+            differences[f"missing_dependencies_seed_{seed}"] = True
         if a[seed].get("python_version") != b[seed].get("python_version"):
             if not allow_confounded:
                 raise ValueError("Python environments differ")
@@ -225,6 +233,8 @@ def compare_runs(left, right, *, allow_confounded=False, allow_incomplete=False)
                                                   "right": b[seed].get("dependency_versions")}
         ac = {row["turns"]: row for row in a[seed].get("cycles", [])}
         bc = {row["turns"]: row for row in b[seed].get("cycles", [])}
+        if len(ac) != len(a[seed].get("cycles", [])) or len(bc) != len(b[seed].get("cycles", [])):
+            raise ValueError("Duplicate checkpoint positions")
         shared = sorted(set(ac) & set(bc))
         if not shared:
             raise ValueError(f"Seed {seed} has no shared checkpoint")
@@ -241,6 +251,7 @@ def compare_runs(left, right, *, allow_confounded=False, allow_incomplete=False)
         output.append({
             "seed": seed, "left_status": a[seed]["status"], "right_status": b[seed]["status"],
             "checkpoint_turn": turn, "left_cycle": left_row["cycle"], "right_cycle": right_row["cycle"],
+            "partial_checkpoint": turn != max(ac) or turn != max(bc),
             "left": left_metrics, "right": right_metrics,
             "delta": {key: right_metrics[key] - left_metrics[key] for key in left_metrics
                       if left_metrics.get(key) is not None and right_metrics.get(key) is not None},
@@ -249,7 +260,7 @@ def compare_runs(left, right, *, allow_confounded=False, allow_incomplete=False)
         "method": "Matching seed/workload fingerprints. Deltas are right minus left.",
         "index_policy_changed": left["config"]["index_policy"] != right["config"]["index_policy"],
         "confounded": bool(differences), "setting_differences": differences,
-        "partial_comparison": any(row["left_status"] != "complete" or row["right_status"] != "complete"
+        "partial_comparison": any(row["partial_checkpoint"] or row["left_status"] != "complete" or row["right_status"] != "complete"
                                   for row in output),
         "warning": ("CONFOUNDED comparison: changed settings are explicitly listed. " if differences else "") +
                    "Manual rebuild policy is a diagnostic control, not a deployed plugin fix.",

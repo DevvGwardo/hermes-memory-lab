@@ -106,7 +106,7 @@ evidence are published.
   --left runs/final-smoke-natural/run.json \
   --right runs/final-smoke-rebuild/run.json \
   --output runs/final-comparison
-python3 tools/export_results.py --runs-root runs
+python3 tools/export_results.py --runs-root runs --release 0.2.0 --harness-tests 43
 ```
 
 Use a new output location or rename the cohort prefix for another release.

@@ -1,0 +1,1141 @@
+{
+  "harness_tests": 60,
+  "release": "0.3.0",
+  "runs": {
+    "v3-smoke-natural": {
+      "summary": {
+        "complete_seeds": 5,
+        "requested_seeds": 5,
+        "saved": {
+          "mean": 0.8,
+          "min": 0.8,
+          "max": 0.8
+        },
+        "indexed_records": {
+          "mean": 0.05185185185185185,
+          "min": 0.05185185185185185,
+          "max": 0.05185185185185185
+        },
+        "recall": {
+          "mean": 0.086,
+          "min": 0.03,
+          "max": 0.12
+        },
+        "active_recall": {
+          "mean": 0.008748058564735088,
+          "min": 0.0,
+          "max": 0.02197802197802198
+        },
+        "active_answer_accuracy": {
+          "mean": 0.008748058564735088,
+          "min": 0.0,
+          "max": 0.02197802197802198
+        },
+        "query_completion": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "deletion_abstention": {
+          "mean": 0.9818181818181818,
+          "min": 0.9090909090909091,
+          "max": 1.0
+        },
+        "context": {
+          "mean": 0.876,
+          "min": 0.85,
+          "max": 0.92
+        },
+        "critical_recall": {
+          "mean": 0.08,
+          "min": 0.0,
+          "max": 0.1
+        }
+      },
+      "gates": {
+        "all_jobs_complete": true,
+        "all_compactions_committed": true,
+        "restart_identity_matches_mode": true,
+        "no_duplicate_ids": true,
+        "full_index_coverage": false,
+        "current_evidence_saved": false,
+        "sqlite_restart_adds_no_loss": true,
+        "persistent_memory_restart_adds_no_loss": true,
+        "critical_recall_complete": false,
+        "chaos_checks_pass": true
+      },
+      "seeds": [
+        {
+          "seed": 1,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 5.11478974999045,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.05185185185185185,
+            "recall": 0.11,
+            "active_recall": 0.02197802197802198,
+            "active_answer_accuracy": 0.02197802197802198,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.86,
+            "critical_recall": 0.1,
+            "duplicate_ids": 0,
+            "facts_lost": 21
+          },
+          "records": 405,
+          "indexed_records": 21,
+          "active_correct": 2,
+          "active_total": 91,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "85800a2de5f34b3879725bac3d8ba692d133657b837120d73f6f45c1c7e7d0f9",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 2,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 4.940063792018918,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.05185185185185185,
+            "recall": 0.11,
+            "active_recall": 0.011235955056179775,
+            "active_answer_accuracy": 0.011235955056179775,
+            "query_completion": 1.0,
+            "deletion_abstention": 0.9090909090909091,
+            "context": 0.92,
+            "critical_recall": 0.1,
+            "duplicate_ids": 0,
+            "facts_lost": 19
+          },
+          "records": 405,
+          "indexed_records": 21,
+          "active_correct": 1,
+          "active_total": 89,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "8a48f4fd06f89b2ed2c55c4e208ff217a8493237687b13b07e1557335243528a",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 3,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 4.903229500021553,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.05185185185185185,
+            "recall": 0.12,
+            "active_recall": 0.0,
+            "active_answer_accuracy": 0.0,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.87,
+            "critical_recall": 0.1,
+            "duplicate_ids": 0,
+            "facts_lost": 18
+          },
+          "records": 405,
+          "indexed_records": 21,
+          "active_correct": 0,
+          "active_total": 88,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "88057ed2690498e40693d88dced389c64bd5ffd4f2d57ef27db52265bc70f075",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 4,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 4.970979167002952,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.05185185185185185,
+            "recall": 0.06,
+            "active_recall": 0.010526315789473684,
+            "active_answer_accuracy": 0.010526315789473684,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.88,
+            "critical_recall": 0.1,
+            "duplicate_ids": 0,
+            "facts_lost": 20
+          },
+          "records": 405,
+          "indexed_records": 21,
+          "active_correct": 1,
+          "active_total": 95,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "b6aa20f3afd422de683755a14bdbad4586b971f95f62ff9e00e9bf3da25dc9a2",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 5,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 5.5717782090068795,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.05185185185185185,
+            "recall": 0.03,
+            "active_recall": 0.0,
+            "active_answer_accuracy": 0.0,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.85,
+            "critical_recall": 0.0,
+            "duplicate_ids": 0,
+            "facts_lost": 20
+          },
+          "records": 405,
+          "indexed_records": 21,
+          "active_correct": 0,
+          "active_total": 97,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "8b8ed3f00b0bd1d0075a422e3e269e2958be87b5a09e68b5f701fe7690891c0d",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        }
+      ]
+    },
+    "v3-smoke-rebuild": {
+      "summary": {
+        "complete_seeds": 5,
+        "requested_seeds": 5,
+        "saved": {
+          "mean": 0.8,
+          "min": 0.8,
+          "max": 0.8
+        },
+        "indexed_records": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "recall": {
+          "mean": 0.44,
+          "min": 0.4,
+          "max": 0.48
+        },
+        "active_recall": {
+          "mean": 0.39149947472464497,
+          "min": 0.3684210526315789,
+          "max": 0.4157303370786517
+        },
+        "active_answer_accuracy": {
+          "mean": 0.39149947472464497,
+          "min": 0.3684210526315789,
+          "max": 0.4157303370786517
+        },
+        "query_completion": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "deletion_abstention": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "context": {
+          "mean": 0.876,
+          "min": 0.85,
+          "max": 0.92
+        },
+        "critical_recall": {
+          "mean": 0.34,
+          "min": 0.3,
+          "max": 0.4
+        }
+      },
+      "gates": {
+        "all_jobs_complete": true,
+        "all_compactions_committed": true,
+        "restart_identity_matches_mode": true,
+        "no_duplicate_ids": true,
+        "full_index_coverage": true,
+        "current_evidence_saved": false,
+        "sqlite_restart_adds_no_loss": true,
+        "persistent_memory_restart_adds_no_loss": true,
+        "critical_recall_complete": false,
+        "chaos_checks_pass": true
+      },
+      "seeds": [
+        {
+          "seed": 1,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 9.84821712502162,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 1.0,
+            "recall": 0.46,
+            "active_recall": 0.4065934065934066,
+            "active_answer_accuracy": 0.4065934065934066,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.86,
+            "critical_recall": 0.4,
+            "duplicate_ids": 0,
+            "facts_lost": 21
+          },
+          "records": 405,
+          "indexed_records": 405,
+          "active_correct": 37,
+          "active_total": 91,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "85800a2de5f34b3879725bac3d8ba692d133657b837120d73f6f45c1c7e7d0f9",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 2,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 11.299572749994695,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 1.0,
+            "recall": 0.48,
+            "active_recall": 0.4157303370786517,
+            "active_answer_accuracy": 0.4157303370786517,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.92,
+            "critical_recall": 0.3,
+            "duplicate_ids": 0,
+            "facts_lost": 19
+          },
+          "records": 405,
+          "indexed_records": 405,
+          "active_correct": 37,
+          "active_total": 89,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "8a48f4fd06f89b2ed2c55c4e208ff217a8493237687b13b07e1557335243528a",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 3,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 22.09341166599188,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 1.0,
+            "recall": 0.45,
+            "active_recall": 0.375,
+            "active_answer_accuracy": 0.375,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.87,
+            "critical_recall": 0.3,
+            "duplicate_ids": 0,
+            "facts_lost": 18
+          },
+          "records": 405,
+          "indexed_records": 405,
+          "active_correct": 33,
+          "active_total": 88,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "88057ed2690498e40693d88dced389c64bd5ffd4f2d57ef27db52265bc70f075",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 4,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 12.513757874985458,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 1.0,
+            "recall": 0.4,
+            "active_recall": 0.3684210526315789,
+            "active_answer_accuracy": 0.3684210526315789,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.88,
+            "critical_recall": 0.4,
+            "duplicate_ids": 0,
+            "facts_lost": 20
+          },
+          "records": 405,
+          "indexed_records": 405,
+          "active_correct": 35,
+          "active_total": 95,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "b6aa20f3afd422de683755a14bdbad4586b971f95f62ff9e00e9bf3da25dc9a2",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        },
+        {
+          "seed": 5,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 10.038447333994554,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 1.0,
+            "recall": 0.41,
+            "active_recall": 0.3917525773195876,
+            "active_answer_accuracy": 0.3917525773195876,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.85,
+            "critical_recall": 0.3,
+            "duplicate_ids": 0,
+            "facts_lost": 20
+          },
+          "records": 405,
+          "indexed_records": 405,
+          "active_correct": 38,
+          "active_total": 97,
+          "archive_correct": 100,
+          "archive_total": 100,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "8b8ed3f00b0bd1d0075a422e3e269e2958be87b5a09e68b5f701fe7690891c0d",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        }
+      ]
+    },
+    "v3-endurance": {
+      "summary": {
+        "complete_seeds": 1,
+        "requested_seeds": 1,
+        "saved": {
+          "mean": 0.8,
+          "min": 0.8,
+          "max": 0.8
+        },
+        "indexed_records": {
+          "mean": 0.0020876826722338203,
+          "min": 0.0020876826722338203,
+          "max": 0.0020876826722338203
+        },
+        "recall": {
+          "mean": 0.09,
+          "min": 0.09,
+          "max": 0.09
+        },
+        "active_recall": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "active_answer_accuracy": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "query_completion": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "deletion_abstention": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "context": {
+          "mean": 0.538,
+          "min": 0.538,
+          "max": 0.538
+        },
+        "critical_recall": {
+          "mean": 0.08,
+          "min": 0.08,
+          "max": 0.08
+        }
+      },
+      "gates": {
+        "all_jobs_complete": true,
+        "all_compactions_committed": true,
+        "restart_identity_matches_mode": true,
+        "no_duplicate_ids": true,
+        "full_index_coverage": false,
+        "current_evidence_saved": false,
+        "sqlite_restart_adds_no_loss": true,
+        "persistent_memory_restart_adds_no_loss": true,
+        "critical_recall_complete": false,
+        "chaos_checks_pass": true
+      },
+      "seeds": [
+        {
+          "seed": 1,
+          "status": "complete",
+          "cycles": 30,
+          "elapsed_s": 169.51686450000852,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.0020876826722338203,
+            "recall": 0.09,
+            "active_recall": 0.0,
+            "active_answer_accuracy": 0.0,
+            "query_completion": 1.0,
+            "deletion_abstention": 1.0,
+            "context": 0.538,
+            "critical_recall": 0.08,
+            "duplicate_ids": 0,
+            "facts_lost": 761
+          },
+          "records": 10059,
+          "indexed_records": 21,
+          "active_correct": 0,
+          "active_total": 91,
+          "archive_correct": 500,
+          "archive_total": 500,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 60,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "606476060307f3e7889d8656a4ca9668328e60974422b7bb5c4ee20b7cc9dd47",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        }
+      ]
+    },
+    "v3-chaos": {
+      "summary": {
+        "complete_seeds": 1,
+        "requested_seeds": 1,
+        "saved": {
+          "mean": 0.8,
+          "min": 0.8,
+          "max": 0.8
+        },
+        "indexed_records": {
+          "mean": 0.168,
+          "min": 0.168,
+          "max": 0.168
+        },
+        "recall": {
+          "mean": 0.06666666666666667,
+          "min": 0.06666666666666667,
+          "max": 0.06666666666666667
+        },
+        "active_recall": {
+          "mean": 0.06666666666666667,
+          "min": 0.06666666666666667,
+          "max": 0.06666666666666667
+        },
+        "active_answer_accuracy": {
+          "mean": 0.06666666666666667,
+          "min": 0.06666666666666667,
+          "max": 0.06666666666666667
+        },
+        "query_completion": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "deletion_abstention": null,
+        "context": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "critical_recall": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      },
+      "gates": {
+        "all_jobs_complete": true,
+        "all_compactions_committed": true,
+        "restart_identity_matches_mode": true,
+        "no_duplicate_ids": true,
+        "full_index_coverage": false,
+        "current_evidence_saved": false,
+        "sqlite_restart_adds_no_loss": true,
+        "persistent_memory_restart_adds_no_loss": true,
+        "critical_recall_complete": false,
+        "chaos_checks_pass": false
+      },
+      "seeds": [
+        {
+          "seed": 1,
+          "status": "complete",
+          "cycles": 3,
+          "elapsed_s": 4.325272625021171,
+          "final_metrics": {
+            "saved": 0.8,
+            "indexed_records": 0.168,
+            "recall": 0.06666666666666667,
+            "active_recall": 0.06666666666666667,
+            "active_answer_accuracy": 0.06666666666666667,
+            "query_completion": 1.0,
+            "deletion_abstention": null,
+            "context": 1.0,
+            "critical_recall": 0.0,
+            "duplicate_ids": 0,
+            "facts_lost": 0
+          },
+          "records": 125,
+          "indexed_records": 21,
+          "active_correct": 2,
+          "active_total": 30,
+          "archive_correct": 30,
+          "archive_total": 30,
+          "exact_context_restarts": true,
+          "exact_raw_restarts": true,
+          "fresh_interpreters": 6,
+          "inference_calls": 0,
+          "harness_sha256": "4a3f851721f965daf57710c04b5414b4bcb62fd702fc8de15865588fd48942e5",
+          "plugin_sha256": "0a39562ec33084d982c99e8da1137272f7a3c98b640bf3f98228f6cfcca93a69",
+          "workload_sha256": "f497489b9f7dff23635962fc456f8afabf8622ed56200310f58c293cd7ac455e",
+          "python_version": "3.14.7 (main, Sep  1 2026, 14:05:28) [Clang 22.1.3 ]",
+          "dependency_versions": {
+            "pydantic": "2.13.4",
+            "litellm": null,
+            "openai": "2.24.0",
+            "httpx": "0.28.1"
+          }
+        }
+      ],
+      "chaos": {
+        "status": "complete",
+        "method": "Offline faults in disposable stores; actual spawned writer/crash processes. Thread/context and host integration checks reuse the original regression suite.",
+        "checks": [
+          {
+            "name": "fresh_store_initialization",
+            "pass": false,
+            "details": {
+              "exception_type": "FileNotFoundError"
+            }
+          },
+          {
+            "name": "forced_build_and_restart",
+            "pass": true,
+            "details": {}
+          },
+          {
+            "name": "append_refreshes_index",
+            "pass": false,
+            "details": {
+              "log_records": 9,
+              "indexed_records": 8
+            }
+          },
+          {
+            "name": "restart_refreshes_stale_index",
+            "pass": false,
+            "details": {
+              "log_records": 9,
+              "indexed_records": 8
+            }
+          },
+          {
+            "name": "odd_to_even_summary_cache",
+            "pass": false,
+            "details": {}
+          },
+          {
+            "name": "profile_home_respected",
+            "pass": false,
+            "details": {
+              "used_supplied_profile_home": false
+            }
+          },
+          {
+            "name": "shared_records_have_session_provenance",
+            "pass": false,
+            "details": {
+              "records": 4,
+              "session_tagged": 0
+            }
+          },
+          {
+            "name": "pre_compaction_checkpoint",
+            "pass": false,
+            "details": {
+              "advertised_api": 1,
+              "required_api": 2,
+              "records_added": 0
+            }
+          },
+          {
+            "name": "tool_only_evidence_synced",
+            "pass": false,
+            "details": {
+              "tool_fact_saved": false
+            }
+          },
+          {
+            "name": "interrupted_index_write_is_atomic",
+            "pass": false,
+            "details": {
+              "previous_index_preserved": false,
+              "raw_log_preserved": true
+            }
+          },
+          {
+            "name": "concurrent_instances_assign_unique_ids",
+            "pass": false,
+            "details": {
+              "assigned_ids": [
+                1,
+                1
+              ],
+              "raw_records": 3
+            }
+          },
+          {
+            "name": "unavailable_summarizer_preserves_raw_log",
+            "pass": true,
+            "details": {
+              "raw_records": 8
+            }
+          },
+          {
+            "name": "background_thread_preserves_profile_scope",
+            "pass": false,
+            "details": {
+              "worker_scope": [
+                "unbound"
+              ]
+            }
+          },
+          {
+            "name": "two_profile_default_stores_are_isolated",
+            "pass": false,
+            "details": {
+              "distinct_roots": false,
+              "cross_profile_evidence_visible": true
+            }
+          },
+          {
+            "name": "multiprocess_writers",
+            "pass": false,
+            "details": {
+              "workers": 8,
+              "expected_records": 200,
+              "committed_records": 200,
+              "duplicate_ids": 101,
+              "timed_out": false
+            }
+          },
+          {
+            "name": "process_crash_during_index_write",
+            "pass": false,
+            "details": {
+              "child_exit": 73,
+              "fault_injected": true,
+              "reopened_nodes": 0,
+              "raw_records_survived": true
+            }
+          },
+          {
+            "name": "malformed_record_preserves_valid_neighbors",
+            "pass": true,
+            "details": {
+              "valid_records_recovered": 2,
+              "invalid_records_injected": 1
+            }
+          },
+          {
+            "name": "summary_timeout_aborts_losslessly",
+            "pass": true,
+            "details": {
+              "policy": "abort_on_summary_failure=true"
+            }
+          },
+          {
+            "name": "malformed_summary_response_aborts_losslessly",
+            "pass": true,
+            "details": {
+              "policy": "abort_on_summary_failure=true"
+            }
+          }
+        ],
+        "passed": 5,
+        "total": 19,
+        "offline": true,
+        "elapsed_s": 2.8961632499995176
+      }
+    }
+  },
+  "date": "2026-10-11",
+  "comparison": {
+    "method": "Matching seed/workload fingerprints. Deltas are right minus left.",
+    "index_policy_changed": true,
+    "confounded": false,
+    "setting_differences": {},
+    "partial_comparison": false,
+    "warning": "Manual rebuild policy is a diagnostic control, not a deployed plugin fix.",
+    "seeds": [
+      {
+        "seed": 1,
+        "left_status": "complete",
+        "right_status": "complete",
+        "checkpoint_turn": 200,
+        "left_cycle": 3,
+        "right_cycle": 3,
+        "partial_checkpoint": false,
+        "left": {
+          "saved": 0.8,
+          "indexed_records": 0.05185185185185185,
+          "recall": 0.11,
+          "active_recall": 0.02197802197802198,
+          "active_answer_accuracy": 0.02197802197802198,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.86,
+          "critical_recall": 0.1,
+          "duplicate_ids": 0,
+          "facts_lost": 21
+        },
+        "right": {
+          "saved": 0.8,
+          "indexed_records": 1.0,
+          "recall": 0.46,
+          "active_recall": 0.4065934065934066,
+          "active_answer_accuracy": 0.4065934065934066,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.86,
+          "critical_recall": 0.4,
+          "duplicate_ids": 0,
+          "facts_lost": 21
+        },
+        "delta": {
+          "saved": 0.0,
+          "indexed_records": 0.9481481481481482,
+          "recall": 0.35000000000000003,
+          "active_recall": 0.38461538461538464,
+          "active_answer_accuracy": 0.38461538461538464,
+          "query_completion": 0.0,
+          "deletion_abstention": 0.0,
+          "context": 0.0,
+          "critical_recall": 0.30000000000000004,
+          "duplicate_ids": 0,
+          "facts_lost": 0
+        }
+      },
+      {
+        "seed": 2,
+        "left_status": "complete",
+        "right_status": "complete",
+        "checkpoint_turn": 200,
+        "left_cycle": 3,
+        "right_cycle": 3,
+        "partial_checkpoint": false,
+        "left": {
+          "saved": 0.8,
+          "indexed_records": 0.05185185185185185,
+          "recall": 0.11,
+          "active_recall": 0.011235955056179775,
+          "active_answer_accuracy": 0.011235955056179775,
+          "query_completion": 1.0,
+          "deletion_abstention": 0.9090909090909091,
+          "context": 0.92,
+          "critical_recall": 0.1,
+          "duplicate_ids": 0,
+          "facts_lost": 19
+        },
+        "right": {
+          "saved": 0.8,
+          "indexed_records": 1.0,
+          "recall": 0.48,
+          "active_recall": 0.4157303370786517,
+          "active_answer_accuracy": 0.4157303370786517,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.92,
+          "critical_recall": 0.3,
+          "duplicate_ids": 0,
+          "facts_lost": 19
+        },
+        "delta": {
+          "saved": 0.0,
+          "indexed_records": 0.9481481481481482,
+          "recall": 0.37,
+          "active_recall": 0.4044943820224719,
+          "active_answer_accuracy": 0.4044943820224719,
+          "query_completion": 0.0,
+          "deletion_abstention": 0.09090909090909094,
+          "context": 0.0,
+          "critical_recall": 0.19999999999999998,
+          "duplicate_ids": 0,
+          "facts_lost": 0
+        }
+      },
+      {
+        "seed": 3,
+        "left_status": "complete",
+        "right_status": "complete",
+        "checkpoint_turn": 200,
+        "left_cycle": 3,
+        "right_cycle": 3,
+        "partial_checkpoint": false,
+        "left": {
+          "saved": 0.8,
+          "indexed_records": 0.05185185185185185,
+          "recall": 0.12,
+          "active_recall": 0.0,
+          "active_answer_accuracy": 0.0,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.87,
+          "critical_recall": 0.1,
+          "duplicate_ids": 0,
+          "facts_lost": 18
+        },
+        "right": {
+          "saved": 0.8,
+          "indexed_records": 1.0,
+          "recall": 0.45,
+          "active_recall": 0.375,
+          "active_answer_accuracy": 0.375,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.87,
+          "critical_recall": 0.3,
+          "duplicate_ids": 0,
+          "facts_lost": 18
+        },
+        "delta": {
+          "saved": 0.0,
+          "indexed_records": 0.9481481481481482,
+          "recall": 0.33,
+          "active_recall": 0.375,
+          "active_answer_accuracy": 0.375,
+          "query_completion": 0.0,
+          "deletion_abstention": 0.0,
+          "context": 0.0,
+          "critical_recall": 0.19999999999999998,
+          "duplicate_ids": 0,
+          "facts_lost": 0
+        }
+      },
+      {
+        "seed": 4,
+        "left_status": "complete",
+        "right_status": "complete",
+        "checkpoint_turn": 200,
+        "left_cycle": 3,
+        "right_cycle": 3,
+        "partial_checkpoint": false,
+        "left": {
+          "saved": 0.8,
+          "indexed_records": 0.05185185185185185,
+          "recall": 0.06,
+          "active_recall": 0.010526315789473684,
+          "active_answer_accuracy": 0.010526315789473684,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.88,
+          "critical_recall": 0.1,
+          "duplicate_ids": 0,
+          "facts_lost": 20
+        },
+        "right": {
+          "saved": 0.8,
+          "indexed_records": 1.0,
+          "recall": 0.4,
+          "active_recall": 0.3684210526315789,
+          "active_answer_accuracy": 0.3684210526315789,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.88,
+          "critical_recall": 0.4,
+          "duplicate_ids": 0,
+          "facts_lost": 20
+        },
+        "delta": {
+          "saved": 0.0,
+          "indexed_records": 0.9481481481481482,
+          "recall": 0.34,
+          "active_recall": 0.35789473684210527,
+          "active_answer_accuracy": 0.35789473684210527,
+          "query_completion": 0.0,
+          "deletion_abstention": 0.0,
+          "context": 0.0,
+          "critical_recall": 0.30000000000000004,
+          "duplicate_ids": 0,
+          "facts_lost": 0
+        }
+      },
+      {
+        "seed": 5,
+        "left_status": "complete",
+        "right_status": "complete",
+        "checkpoint_turn": 200,
+        "left_cycle": 3,
+        "right_cycle": 3,
+        "partial_checkpoint": false,
+        "left": {
+          "saved": 0.8,
+          "indexed_records": 0.05185185185185185,
+          "recall": 0.03,
+          "active_recall": 0.0,
+          "active_answer_accuracy": 0.0,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.85,
+          "critical_recall": 0.0,
+          "duplicate_ids": 0,
+          "facts_lost": 20
+        },
+        "right": {
+          "saved": 0.8,
+          "indexed_records": 1.0,
+          "recall": 0.41,
+          "active_recall": 0.3917525773195876,
+          "active_answer_accuracy": 0.3917525773195876,
+          "query_completion": 1.0,
+          "deletion_abstention": 1.0,
+          "context": 0.85,
+          "critical_recall": 0.3,
+          "duplicate_ids": 0,
+          "facts_lost": 20
+        },
+        "delta": {
+          "saved": 0.0,
+          "indexed_records": 0.9481481481481482,
+          "recall": 0.38,
+          "active_recall": 0.3917525773195876,
+          "active_answer_accuracy": 0.3917525773195876,
+          "query_completion": 0.0,
+          "deletion_abstention": 0.0,
+          "context": 0.0,
+          "critical_recall": 0.3,
+          "duplicate_ids": 0,
+          "facts_lost": 0
+        }
+      }
+    ]
+  }
+}

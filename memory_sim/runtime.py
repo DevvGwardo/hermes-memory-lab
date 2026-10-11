@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import socket
 import sys
+import threading
 import time
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -25,44 +26,75 @@ class BudgetExceeded(RuntimeError):
 
 
 class Transport:
-    def __init__(self, mode="offline", max_calls=12):
+    def __init__(self, mode="offline", max_calls=12, journal_path=None):
         self.mode, self.max_calls = mode, max_calls
+        self._lock = threading.Lock()
+        self.journal_path = Path(journal_path) if journal_path else None
         self.calls = []
         self.exhaustions = 0
         self.key = os.environ.get("SURPLUS_API_KEY") if mode == "surplus" else None
         if mode == "surplus" and not self.key:
             raise ValueError("SURPLUS_API_KEY must already be in the shell; no credential files are searched.")
+        self._checkpoint()
+
+    def _checkpoint(self):
+        if self.journal_path:
+            from .runner import atomic_json
+            atomic_json(self.journal_path, self.calls)
 
     def ask(self, prompt, *, stage="recall", max_tokens=1500):
         if self.mode == "offline":
             raise ValueError("Offline transport cannot make inference calls")
-        if len(self.calls) >= self.max_calls:
-            self.exhaustions += 1
-            raise BudgetExceeded("Inference call budget exhausted")
-        request = urllib.request.Request(
-            "https://api.surplusintelligence.ai/v1/chat/completions",
-            data=json.dumps({"model": "glm-5.3-flash", "temperature": .2, "max_tokens": max_tokens,
-                             "messages": [{"role": "user", "content": prompt}]}).encode(),
-            headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"},
-        )
+        with self._lock:
+            if len(self.calls) >= self.max_calls:
+                self.exhaustions += 1
+                raise BudgetExceeded("Inference call budget exhausted")
+            metadata = {"stage": stage, "status": "started"}
+            self.calls.append(metadata)
+            # Reserve and persist before I/O, including requests killed in flight.
+            self._checkpoint()
         start = time.monotonic()
-        metadata = {"stage": stage}
+        outcome = {}
         permission = _TRANSPORT_ALLOWED.set(True)
         try:
+            request = urllib.request.Request(
+                "https://api.surplusintelligence.ai/v1/chat/completions",
+                data=json.dumps({"model": "glm-5.3-flash", "temperature": .2, "max_tokens": max_tokens,
+                                 "messages": [{"role": "user", "content": prompt}]}).encode(),
+                headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"},
+            )
             with urllib.request.urlopen(request, timeout=30) as response:
                 result = json.loads(response.read())
-            metadata.update(ok=True, usage=result.get("usage", {}), model=result.get("model"),
-                            finish_reason=result["choices"][0].get("finish_reason"))
-            if metadata["finish_reason"] == "length":
+            outcome.update(ok=True, usage=result.get("usage", {}), model=result.get("model"),
+                           finish_reason=result["choices"][0].get("finish_reason"))
+            if outcome["finish_reason"] == "length":
                 raise RuntimeError("Truncated inference output")
             return result["choices"][0]["message"].get("content") or ""
-        except Exception as exc:
-            metadata.update(ok=False, error_type=type(exc).__name__)
+        except BaseException as exc:
+            outcome.update(ok=False, error_type=type(exc).__name__)
             raise
         finally:
             _TRANSPORT_ALLOWED.reset(permission)
-            metadata["latency_s"] = time.monotonic() - start
-            self.calls.append(metadata)
+            with self._lock:
+                metadata.update(outcome, status="finished", latency_s=time.monotonic() - start)
+                self._checkpoint()
+
+
+def recover_inference_calls(result_path):
+    """Read only owned metadata journals; None means no journal was created."""
+    result_path = Path(result_path)
+    paths = [result_path.with_suffix(".calls.json")]
+    paths += sorted((result_path.parent / "checkpoints").glob("*.calls.json"))
+    calls, found = [], False
+    for path in paths:
+        if not path.exists():
+            continue
+        found = True
+        entries = json.loads(path.read_text())
+        if not isinstance(entries, list) or any(not isinstance(row, dict) for row in entries):
+            raise ValueError("Malformed inference journal")
+        calls.extend({**row, "worker_phase": path.name.removesuffix(".calls.json")} for row in entries)
+    return calls if found else None
 
 
 class Harness:
@@ -114,13 +146,33 @@ class Harness:
 
     @contextlib.contextmanager
     def adapters(self):
-        with patch.object(self.module, "_chat", side_effect=self.chat), \
+        owned = []
+        class OwnedThread(threading.Thread):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                owned.append(self)
+        target_threading = getattr(self.module, "threading", None)
+        with contextlib.ExitStack() as stack:
+            if target_threading is not None:
+                stack.enter_context(patch.object(self.module, "threading", SimpleNamespace(
+                    **{**vars(target_threading), "Thread": OwnedThread})))
+            with patch.object(self.module, "_chat", side_effect=self.chat), \
                 patch.object(self.module, "_llm_summarize", side_effect=self.tree_summary), \
                 patch.object(self.module, "_agy_verify", return_value=None), \
                 patch.object(self.module, "_summarizer_key", return_value=None), \
                 patch.object(self.module, "time", SimpleNamespace(
                     time=time.time, strftime=time.strftime, sleep=lambda seconds: None)):
-            yield
+                try:
+                    yield
+                finally:
+                    # Keep fake adapters and host guards active until target threads finish.
+                    # A stuck thread is bounded by the owning process deadline.
+                    index = 0
+                    while index < len(owned):
+                        thread = owned[index]
+                        index += 1
+                        if thread.ident is not None and thread is not threading.current_thread():
+                            thread.join()
 
     def provider(self, session_id="synthetic-session"):
         provider = self.module.UniichatMemoryProvider({"root": str(self.home / "uniichat"), "summarize": True})
@@ -154,14 +206,7 @@ def _bound_host(config, scratch):
     with patch("hermes_cli.venv_sync.prepare_launch", return_value=None), \
             patch("pm.environments.activate_dependencies", return_value=None), \
             patch("hermes_cli._early_recovery.recover_if_needed", return_value=None):
-        original_connect = socket.socket.connect
-
-        def guarded_connect(sock, address):
-            if config.get("inference", "offline") == "offline" or not _TRANSPORT_ALLOWED.get():
-                raise RuntimeError("Only explicitly budgeted inference may access the network")
-            return original_connect(sock, address)
-
-        with patch.object(socket.socket, "connect", new=guarded_connect):
+        with network_guard(config):
             spec = importlib.util.spec_from_file_location("memory_sim_target", config["plugin"])
             module = importlib.util.module_from_spec(spec)
             sys.modules[spec.name] = module
@@ -170,12 +215,29 @@ def _bound_host(config, scratch):
             from agent.context_compressor import ContextCompressor
             from agent.memory_manager import MemoryManager
             from hermes_state import SessionDB
-            with patch.object(socket.socket, "connect", new=guarded_connect):
-                yield module, home
+            yield module, home
+
+
+@contextlib.contextmanager
+def network_guard(config):
+    """Guard standard Python TCP, UDP and DNS paths, not native subprocesses."""
+    def guarded(original):
+        def call(*args, **kwargs):
+            if config.get("inference", "offline") == "offline" or not _TRANSPORT_ALLOWED.get():
+                raise RuntimeError("Only explicitly budgeted inference may access the network")
+            return original(*args, **kwargs)
+        return call
+    with contextlib.ExitStack() as stack:
+        for name in ("connect", "connect_ex", "sendto", "sendmsg"):
+            if hasattr(socket.socket, name):
+                stack.enter_context(patch.object(socket.socket, name, new=guarded(getattr(socket.socket, name))))
+        for name in ("getaddrinfo", "gethostbyname", "gethostbyname_ex", "gethostbyaddr"):
+            stack.enter_context(patch.object(socket, name, new=guarded(getattr(socket, name))))
+        yield
 
 
 @contextlib.contextmanager
 def host(config, scratch):
-    with patch.dict(os.environ, {}, clear=False):
+    with patch.dict(os.environ, {}, clear=False), patch.object(sys, "path", list(sys.path)):
         with _bound_host(config, scratch) as bound:
             yield bound

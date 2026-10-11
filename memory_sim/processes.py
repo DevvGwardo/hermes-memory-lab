@@ -62,6 +62,7 @@ def stop_owned(process, isolate_group, ready):
 def owned_job(target, args, result_path, timeout, *, isolate_group=True):
     """Only stop a process handle/group created here; never match names or argv."""
     from .runner import atomic_json
+    from .runtime import recover_inference_calls
     result_path = Path(result_path)
     ctx = multiprocessing.get_context("spawn")
     ready = ctx.Event()
@@ -100,6 +101,12 @@ def owned_job(target, args, result_path, timeout, *, isolate_group=True):
             result["timeout_s"] = timeout
     elif process.exitcode != 0:
         result.update(status="error", worker_exitcode=process.exitcode)
+    try:
+        calls = recover_inference_calls(result_path)
+        if calls is not None:
+            result["inference_calls"] = calls
+    except (OSError, ValueError):
+        result.update(status="error", error_type="InferenceJournalInvalid")
     result.setdefault("elapsed_s", time.monotonic() - started)
     result_path.parent.mkdir(parents=True, exist_ok=True)
     atomic_json(result_path, result)

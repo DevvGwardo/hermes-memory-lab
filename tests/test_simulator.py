@@ -54,6 +54,7 @@ def fixture_run(fingerprint="same", policy="natural", correct=5):
             "seed": 1, "status": "complete", "workload_sha256": fingerprint,
             "grading_version": 2, "workload_version": 2, "harness_sha256": "same-harness",
             "python_version": "same-python",
+            "dependency_versions": {"pydantic": "synthetic-version"},
             "cycles": [{"cycle": 3, "turns": 200, "session": 0,
                         "restart_state_matches": True, "restart_raw_state_matches": True,
                         "saved": score, "context_after": score, "after_restart": score,

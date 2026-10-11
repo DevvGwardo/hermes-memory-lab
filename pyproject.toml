@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hermes-memory-lab"
-version = "0.2.0"
+version = "0.3.0"
 description = "Seeded, isolated memory and compaction diagnostics for Hermes"
 requires-python = ">=3.10"
 readme = "README.md"

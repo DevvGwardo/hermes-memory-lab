@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.3.0 · 2026-10-11
+
+### Gemini-assisted hardening
+
+- Use Gemini Flash Lite through the existing OmniRoute service for two scoped
+  reviews, a repair consultation, and a final patch review. Reproduce findings
+  locally rather than accepting model suggestions as evidence.
+- Reserve API slots under a lock before I/O. Concurrent requests cannot exceed
+  the cap. Atomic metadata-only journals retain in-flight reservations across
+  hard worker exits; failed workers and parent recovery retain usage.
+- Guard standard Python `connect_ex`, UDP and DNS paths as well as TCP connects.
+  Explicitly budgeted transport retains permission; native subprocesses remain
+  outside the declared isolation model.
+- Drain threads created through the target's `threading` module before restoring
+  fake adapters, homes and network guards. Restore `sys.path` between object-mode
+  scopes. Stuck target threads remain subject to the owned-process deadline.
+- Require committed, non-budget-aborted compactions and restart tokens that match
+  configured process/object mode. Process tokens must be unique across cycles.
+- Reject duplicate comparison checkpoints and missing environment metadata unless
+  explicitly confounded. Earlier shared checkpoints always report partial status.
+- Expand tests from **43 to 60**, including concurrent calls, abrupt exit during
+  I/O, failed-worker telemetry, network bypasses, thread drainage and gate checks.
+- Remove hardcoded test-count/date/version claims from the release exporter.
+  Preserve the v0.2 baseline and add separately identified v0.3 evidence.
+
 ## 0.2.0 · 2026-10-11
 
 ### Correctness

@@ -9,7 +9,11 @@
 > untouched. Scripted scores measure infrastructure behavior, not semantic model accuracy.
 
 **[Quick start](#quick-start) · [Diagrams](#diagrams) · [Grading](#grading-contract) ·
-[Results](docs/results.md) · [Changes](CHANGELOG.md)**
+[Latest hardening](docs/hardening.md) · [Baseline](docs/results.md) · [Changes](CHANGELOG.md)**
+
+**v0.3.0:** 60 passing tests. Concurrent API budgets, crash-safe usage journals,
+Python DNS/UDP guards, background-thread drainage, and stronger lifecycle gates.
+Gemini assisted the review through OmniRoute; its suggestions were verified locally.
 
 ## What it tests
 
@@ -163,6 +167,8 @@ probes rotate across groups rather than selecting only short-message facts.
 
 Process IDs and startup tokens are recorded. `--restart-mode objects` is an
 explicit same-interpreter control, not labeled as a process restart.
+Acceptance checks the configured mode and token uniqueness across all checkpoints.
+No-op or budget-aborted compactions cannot pass the compaction gate.
 
 This tests **component interpreter restarts**, not a deployed gateway, full
 interactive agent loop, saved prompt cache, or OS reboot.
@@ -196,6 +202,8 @@ comparisons require complete jobs and aligned final checkpoints.
 - `--allow-confounded` explicitly permits changed settings and labels the differences.
 - `--allow-incomplete` uses only a shared checkpoint, never unrelated last snapshots.
 - Different source workloads or grading/harness versions cannot be bypassed.
+- Duplicate checkpoint positions are rejected. Missing environment metadata requires
+  an explicit confounded override; earlier shared snapshots are always labeled partial.
 - Plugin/core source changes are the intended treatment; index policy changes are
   separately labeled diagnostic controls.
 
@@ -228,6 +236,10 @@ role mix.
 
 - Private synthetic homes, runtime directories, raw stores and SQLite databases.
 - Python networking blocked except during explicitly budgeted inference.
+- TCP, `connect_ex`, UDP and DNS use the same permission guard.
+- Target-created threads drain before fake adapters and host guards are restored.
+- API slots are reserved before I/O under a lock; atomic, metadata-only journals
+  recover in-flight attempts and failed-worker usage without prompts or credentials.
 - Per-job deadlines and owned-process-group cleanup on SIGINT/SIGTERM.
 - Interrupted runs preserve reports and do not schedule remaining seeds.
 - Streamed workload generation/hashing and owned-directory disk checks.
@@ -249,6 +261,9 @@ Artifacts include `run.json`, `curve.csv`, standalone `report.html`, per-seed
 source/truth/trace JSONL, checkpoint and restart observations, fault results, and
 matched-comparison JSON/Markdown. Raw artifacts stay local and are Git-ignored.
 Only safe numeric release summaries are committed.
+Call journals record attempts/reservations. A request killed in flight has unknown
+completion/billing status and still consumes its slot. Journals do not claim
+confirmed server-side usage for those requests.
 
 ## Repository layout
 
@@ -270,6 +285,7 @@ tools/render_diagrams.py  Reproducible diagram renderer
 tools/export_results.py   Safe release-evidence exporter
 ```
 
-See [CHANGELOG.md](CHANGELOG.md) for the six-gap hardening work and
+See [CHANGELOG.md](CHANGELOG.md) for hardening work and
+[v0.3 validation](docs/hardening.md) plus the
 [executed results](docs/results.md) for baseline failures. The lab's tests passing
 does not imply that the unchanged memory plugin passes its behavior contracts.

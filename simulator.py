@@ -169,6 +169,27 @@ def main(argv=None):
     return 0
 
 
+def restart_identities_valid(result):
+    for seed in result["seeds"]:
+        mode = seed.get("config", result["config"]).get("restart_mode", "process")
+        tokens = []
+        for row in seed.get("cycles", []):
+            restart = row.get("restart", {})
+            pair = (restart.get("checkpoint_start_token"), restart.get("verification_start_token"))
+            if restart.get("mode") != mode or not all(pair):
+                return False
+            if mode == "process" and pair[0] == pair[1]:
+                return False
+            if mode == "objects" and pair[0] != pair[1]:
+                return False
+            if mode not in {"process", "objects"}:
+                return False
+            tokens.extend(pair)
+        if tokens and len(set(tokens)) != (len(tokens) if mode == "process" else 1):
+            return False
+    return True
+
+
 def acceptance_gates(result):
     rows = [cycle for seed in result["seeds"] for cycle in seed.get("cycles", [])]
     complete = not result.get("interrupted") and (
@@ -176,6 +197,10 @@ def acceptance_gates(result):
         seed["status"] == "complete" for seed in result["seeds"])
     return {
         "all_jobs_complete": complete and bool(rows),
+        "all_compactions_committed": bool(rows) and all(
+            row.get("compression_committed", False) and not row.get("compression_budget_exhausted", False)
+            for row in rows),
+        "restart_identity_matches_mode": bool(rows) and restart_identities_valid(result),
         "no_duplicate_ids": bool(rows) and all(row["duplicate_ids"] == 0 for row in rows),
         "full_index_coverage": bool(rows) and all(row["indexed_records"] == row["records"] for row in rows),
         "current_evidence_saved": bool(rows) and all(row["saved"]["correct"] == row["saved"]["total"] for row in rows),

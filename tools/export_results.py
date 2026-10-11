@@ -14,12 +14,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs-root", type=Path, required=True)
     parser.add_argument("--prefix", default="final")
+    parser.add_argument("--endurance-run", type=Path, help="Use a separately retried endurance directory")
+    parser.add_argument("--release", required=True, help="Version that produced these runs")
+    parser.add_argument("--harness-tests", type=int, required=True, help="Verified passing test count")
     parser.add_argument("--output", type=Path, default=ROOT / "docs/release-summary.json")
     args = parser.parse_args()
-    report = {"date": "2026-10-11", "harness_tests": 43, "release": "0.2.0", "runs": {}}
+    if args.harness_tests < 0:
+        parser.error("--harness-tests cannot be negative")
+    report = {"harness_tests": args.harness_tests, "release": args.release, "runs": {}}
     for suffix in ("smoke-natural", "smoke-rebuild", "endurance", "chaos"):
         name = f"{args.prefix}-{suffix}"
-        source = json.loads((args.runs_root / name / "run.json").read_text())
+        folder = args.endurance_run if suffix == "endurance" and args.endurance_run else args.runs_root / name
+        source = json.loads((folder / "run.json").read_text())
+        report.setdefault("date", source["started_at"][:10])
         seeds = []
         for seed in source["seeds"]:
             row = seed["cycles"][-1]

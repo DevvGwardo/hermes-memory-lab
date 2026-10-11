@@ -16,7 +16,7 @@ import uuid
 
 from .grading import collect_answers, grade_answers, probe_keys
 from .processes import owned_job
-from .runtime import BudgetExceeded, Harness, Transport, host
+from .runtime import BudgetExceeded, Harness, Transport, host, recover_inference_calls
 from .workload import Event, Ledger, WORKLOAD_VERSION, iter_generate, observed_state
 
 GRADING_VERSION = 2
@@ -38,9 +38,9 @@ def check_disk(root, config):
 
 
 @contextlib.contextmanager
-def runtime(config, scratch, sid, remaining_calls):
+def runtime(config, scratch, sid, remaining_calls, journal_path=None):
     with host(config, Path(scratch)) as (module, home):
-        harness = Harness(module, home, Transport(config["inference"], remaining_calls))
+        harness = Harness(module, home, Transport(config["inference"], remaining_calls, journal_path))
         with harness.adapters():
             from hermes_state import SessionDB
             provider, manager = harness.provider(sid)
@@ -70,9 +70,10 @@ def cycle_worker(config, scratch, source_path, sid, keys, remaining_calls, outpu
     from .runner import atomic_json, disk_bytes
     result = {"status": "running", **identity()}
     output = Path(output)
+    harness = None
     atomic_json(output, result)
     try:
-        with runtime(config, scratch, sid, remaining_calls) as (harness, provider, manager, db):
+        with runtime(config, scratch, sid, remaining_calls, output.with_suffix(".calls.json")) as (harness, provider, manager, db):
             from agent.model_metadata import estimate_messages_tokens_rough
             history = db.get_messages_as_conversation(sid)
             (provider.store.root / "tree").mkdir(parents=True, exist_ok=True)
@@ -138,16 +139,20 @@ def cycle_worker(config, scratch, source_path, sid, keys, remaining_calls, outpu
     except Exception as exc:
         result.update(status="budget_exhausted" if isinstance(exc, BudgetExceeded) else "error",
                       error_type=type(exc).__name__)
-    atomic_json(output, result)
+    finally:
+        if harness is not None:
+            result["inference_calls"] = harness.transport.calls
+        atomic_json(output, result)
 
 
 def restart_worker(config, scratch, sid, keys, remaining_calls, output):
     from .runner import atomic_json
     result = {"status": "running", **identity()}
     output = Path(output)
+    harness = None
     atomic_json(output, result)
     try:
-        with runtime(config, scratch, sid, remaining_calls) as (harness, provider, manager, db):
+        with runtime(config, scratch, sid, remaining_calls, output.with_suffix(".calls.json")) as (harness, provider, manager, db):
             result.update(
                 status="complete",
                 context_state=state(row.get("content") for row in db.get_messages_as_conversation(sid)),
@@ -157,7 +162,10 @@ def restart_worker(config, scratch, sid, keys, remaining_calls, output):
             )
     except Exception as exc:
         result.update(status="error", error_type=type(exc).__name__)
-    atomic_json(output, result)
+    finally:
+        if harness is not None:
+            result["inference_calls"] = harness.transport.calls
+        atomic_json(output, result)
 
 
 def run_worker(config, target, args, output, remaining_time):
@@ -166,6 +174,9 @@ def run_worker(config, target, args, output, remaining_time):
         return owned_job(target, args, output, max(.1, remaining_time), isolate_group=False)
     target(*args)
     result = json.loads(Path(output).read_text())
+    calls = recover_inference_calls(output)
+    if calls is not None:
+        result["inference_calls"] = calls
     atomic_json(Path(output), result)
     return result
 
