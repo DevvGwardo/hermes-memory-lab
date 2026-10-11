@@ -9,6 +9,7 @@
 !/memory_sim/
 !/tests/
 !/docs/
+!/assets/
 !/tools/
 !/package.json
 !/package-lock.json

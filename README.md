@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.jpg" alt="Hermes Memory Lab Banner" />
+</p>
+
 # Hermes Memory Lab
 
 **Reproducible memory and compaction diagnostics, with strict grading and real process restarts.**
