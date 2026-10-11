@@ -11,9 +11,9 @@ flowchart LR
     Restart --> Grade
     Ledger -. "Expected state, never adapter input" .-> Grade
     Grade --> Reports["JSON + CSV + HTML<br/>Matched comparisons and acceptance gates"]
-    classDef source fill:#f5f2ec,stroke:#626f77,color:#18292d
-    classDef real fill:#e1f0ef,stroke:#176370,color:#18292d
-    classDef grader fill:#fff0cc,stroke:#ad6f16,color:#18292d
+    classDef source fill:#131e36,stroke:#3b82f6,stroke-width:1.5px,color:#e2e8f0
+    classDef real fill:#0c2838,stroke:#06b6d4,stroke-width:1.5px,color:#e0f2fe
+    classDef grader fill:#2a1e0b,stroke:#f59e0b,stroke-width:1.5px,color:#fef3c7
     class Source,Input,Reports source
     class Runtime,Recall,Compact,DB,Restart real
     class Ledger,Grade grader
